@@ -34,7 +34,7 @@ function Translator() {
 
     try {
       // Send the translation request to the backend API
-      const response = await axios.post('http://localhost:5000/api/translate', translationData);
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/translate`, translationData);
       setOutputText(response.data.translation);  // Set the translated text in the output field
     } catch (error) {
       console.error(error);
