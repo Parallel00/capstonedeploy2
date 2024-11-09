@@ -1,0 +1,16 @@
+#container{
+	background-color: #fdd685;
+	padding: 20px;
+}
+
+html, body{
+	height: 100%;
+	margin: 0;
+}
+
+body{
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: linear-gradient(180deg, rgba(2,0,36,1) 0%, rgba(77,77,77,1) 0%, rgba(171,171,171,1) 100%);
+}
