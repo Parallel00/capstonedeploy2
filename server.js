@@ -26,16 +26,13 @@ app.use(express.urlencoded({ extended: true }));
 
 // Session management setup
 app.use(session({
-  store: new connectPgSimple({
-    pool: pool, // Use the existing PostgreSQL pool
-    tableName: 'session', // Table to store sessions
-  }),
-  secret: 'your_secret_key',
+  store: new connectPgSimple({ pool: pool, tableName: 'session' }),
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
-    secure: false, // Set to true if using HTTPS
-    httpOnly: true, // Ensures cookies are sent only via HTTP (not accessible by JavaScript)
+    secure: true,  // Set to true since Render uses HTTPS
+    httpOnly: true,
   },
 }));
 
