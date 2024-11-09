@@ -83,7 +83,7 @@ app.post('/api/translate', async (req, res) => {
     method: 'POST',
     url: 'https://translate-plus.p.rapidapi.com/translate',
     headers: {
-      'x-rapidapi-key': 'e978d93128msh9a0d23411ab8a0fp16dfbcjsn9c3c4d21f62b', // Replace with your actual API key
+      'x-rapidapi-key': process.env.RAPIDAPI_KEY, // Replace with your actual API key
       'x-rapidapi-host': 'translate-plus.p.rapidapi.com',
       'Content-Type': 'application/json',
     },
