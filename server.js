@@ -7,20 +7,17 @@ const app = express();
 const connectPgSimple = require('connect-pg-simple')(session);
 const port = process.env.PORT || 5000;
 
-// Middleware to allow CORS
+// CORS setup
 app.use(cors({
-  origin: 'http://localhost:3000',  // Allow only your frontend
+  origin: process.env.FRONTEND_URL,
   methods: 'GET,POST',
   credentials: true,
 }));
 
-// PostgreSQL client setup
+// PostgreSQL client setup using the DATABASE_URL from the environment
 const pool = new Pool({
-  user: 'Rival',
-  host: 'localhost',
-  database: 'translatabase',
-  password: '',
-  port: 5432,
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false }, // Necessary for Render's SSL certificates
 });
 
 // Middleware for handling JSON and URL encoded form data
