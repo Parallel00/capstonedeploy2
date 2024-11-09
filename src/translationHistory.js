@@ -8,7 +8,8 @@ function TranslationHistory() {
     // Fetch translation history from the backend
     const fetchHistory = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/history", { withCredentials: true });
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/history`, { withCredentials: true });
+
         setHistory(response.data);
       } catch (error) {
         console.error("Failed to fetch history:", error);
