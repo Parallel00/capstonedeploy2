@@ -17,12 +17,12 @@
     "react-router-dom": "^6.28.0",
     "react-scripts": "^5.0.1",
     "web-vitals": "*",
-    "concurrently": "^8.0.0"  // Added concurrently
+    "concurrently": "^8.0.0"
   },
   "scripts": {
     "start": "concurrently \"npm run server\" \"npm run frontend\"",
-    "server": "node server.js", // This is for starting the backend
-    "frontend": "react-scripts start", // This is for starting the frontend
+    "server": "node server.js",
+    "frontend": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
