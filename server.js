@@ -15,15 +15,6 @@ app.use(cors({
   credentials: true,
 }));
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'build')));
-
-  // For any requests that do not match an API route, serve the React app
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'build', 'index.html'));
-  });
-}
-
 // PostgreSQL client setup
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
@@ -163,7 +154,14 @@ app.delete('/api/history/:id', async (req, res) => {
   }
 });
 
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'build')));
 
+  // For any requests that do not match an API route, serve the React app
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
+}
 
 // Start the server
 app.listen(port, () => {
