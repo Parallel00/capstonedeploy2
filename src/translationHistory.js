@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import axios from "axios";
 import "./translator.css";
+
 function TranslationHistory() {
   const [history, setHistory] = useState([]);
 
@@ -32,48 +33,49 @@ function TranslationHistory() {
     }
   };
 
-return (
-  <div style={{ padding: "20px", textAlign: "center" }} id="container">
-    <Link to="/" style={{ display: "block", marginBottom: "20px", color: "blue", textDecoration: "underline" }}>
-      Back to Homepage
-    </Link>
-    <h2>Translation History</h2>
-    {Array.isArray(history) && history.length === 0 ? (
-      <p>No translation history available.</p>
-    ) : (
-      <table style={{ width: "80%", margin: "auto", borderCollapse: "collapse" }}>
-        <thead>
-          <tr>
-            <th>Input Text</th>
-            <th>Output Text</th>
-            <th>Source Language</th>
-            <th>Target Language</th>
-            <th>Timestamp</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {Array.isArray(history) && history.length > 0 ? (
-            history.map((item) => (
-              <tr key={item.id}>
-                <td>{item.input_text}</td>
-                <td>{item.output_text}</td>
-                <td>{item.source_language}</td>
-                <td>{item.target_language}</td>
-                <td>{new Date(item.timestamp).toLocaleString()}</td>
-                <td>
-                  <button onClick={() => deleteTranslation(item.id)}>Delete</button>
-                </td>
-              </tr>
-            ))
-          ) : (
-            <tr><td colSpan="6">No history found.</td></tr>
-          )}
-        </tbody>
-      </table>
-    )}
-  </div>
-);
-
+  return (
+    <div style={{ padding: "20px", textAlign: "center" }} id="container">
+      <Link to="/" style={{ display: "block", marginBottom: "20px", color: "blue", textDecoration: "underline" }}>
+        Back to Homepage
+      </Link>
+      <h2>Translation History</h2>
+      {Array.isArray(history) && history.length === 0 ? (
+        <p>No translation history available.</p>
+      ) : (
+        <table style={{ width: "80%", margin: "auto", borderCollapse: "collapse" }}>
+          <thead>
+            <tr>
+              <th>Input Text</th>
+              <th>Output Text</th>
+              <th>Source Language</th>
+              <th>Target Language</th>
+              <th>Timestamp</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {Array.isArray(history) && history.length > 0 ? (
+              history.map((item) => (
+                <tr key={item.id}>
+                  <td>{item.input_text}</td>
+                  <td>{item.output_text}</td>
+                  <td>{item.source_language}</td>
+                  <td>{item.target_language}</td>
+                  <td>{new Date(item.timestamp).toLocaleString()}</td>
+                  <td>
+                    <button onClick={() => deleteTranslation(item.id)}>Delete</button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr><td colSpan="6">No history found.</td></tr>
+            )}
+          </tbody>
+        </table>
+      )}
+    </div>
+  );
+}
 
 export default TranslationHistory;
+
