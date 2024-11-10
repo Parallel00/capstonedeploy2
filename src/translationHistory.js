@@ -9,7 +9,7 @@ function TranslationHistory() {
     // Fetch translation history from the backend
     const fetchHistory = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/history", { withCredentials: true });
+        const response = await axios.get("https://capstonedeploy2.onrender.com/api/history", { withCredentials: true });
         setHistory(response.data);
       } catch (error) {
         console.error("Failed to fetch history:", error);
@@ -23,7 +23,7 @@ function TranslationHistory() {
   // Function to delete a translation by ID
   const deleteTranslation = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/history/${id}`, { withCredentials: true });
+      await axios.delete(`https://capstonedeploy2.onrender.com/api/history/${id}`, { withCredentials: true });
       // Filter out the deleted translation from the local state
       setHistory(history.filter((item) => item.id !== id));
     } catch (error) {
