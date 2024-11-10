@@ -6,6 +6,7 @@ const cors = require('cors');
 const app = express();
 const connectPgSimple = require('connect-pg-simple')(session);
 const port = process.env.PORT || 5000;
+const path = require('path');
 
 // Middleware to allow CORS
 app.use(cors({
@@ -13,6 +14,15 @@ app.use(cors({
   methods: 'GET,POST,DELETE',
   credentials: true,
 }));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'build')));
+
+  // For any requests that do not match an API route, serve the React app
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'build', 'index.html'));
+  });
+}
 
 // PostgreSQL client setup
 const pool = new Pool({
