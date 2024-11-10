@@ -6,17 +6,16 @@ import "./translator.css";
 function TranslationHistory() {
   const [history, setHistory] = useState([]);
 
-  useEffect(() => {
-    // Fetch translation history from the backend
-    const fetchHistory = async () => {
-      try {
-        const response = await axios.get("https://capstonedeploy2.onrender.com/api/history", { withCredentials: true });
-        setHistory(response.data);
-      } catch (error) {
-        console.error("Failed to fetch history:", error);
-        alert("There was an issue fetching the history. Please try again.");
-      }
-    };
+  const fetchHistory = async () => {
+  try {
+    const response = await axios.get("https://capstonedeploy2.onrender.com/api/history", { withCredentials: true });
+    console.log('Translation history fetched:', response.data);
+    setHistory(response.data);
+  } catch (error) {
+    console.error("Failed to fetch history:", error);
+    alert("There was an issue fetching the history. Please try again.");
+  }
+};
 
     fetchHistory();
   }, []);
