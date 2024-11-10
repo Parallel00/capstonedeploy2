@@ -17,9 +17,6 @@ function TranslationHistory() {
   }
 };
 
-    fetchHistory();
-  }, []);
-
   // Function to delete a translation by ID
   const deleteTranslation = async (id) => {
     try {
