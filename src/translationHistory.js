@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import axios from "axios";
@@ -6,21 +7,25 @@ import "./translator.css";
 function TranslationHistory() {
   const [history, setHistory] = useState([]);
 
-  const fetchHistory = async () => {
-  try {
-    const response = await axios.get("https://capstonedeploy2.onrender.com/api/history", { withCredentials: true });
-    console.log('Translation history fetched:', response.data);
-    setHistory(response.data);
-  } catch (error) {
-    console.error("Failed to fetch history:", error);
-    alert("There was an issue fetching the history. Please try again.");
-  }
-};
+  useEffect(() => {
+    // Fetch translation history from the backend
+    const fetchHistory = async () => {
+      try {
+        const response = await axios.get("https://capstonedeploy2.onrender.com/api/history", { withCredentials: true });
+        setHistory(response.data);
+      } catch (error) {
+        console.error("Failed to fetch history:", error);
+        alert("There was an issue fetching the history. Please try again.");
+      }
+    };
+
+    fetchHistory();
+  }, []);
 
   // Function to delete a translation by ID
   const deleteTranslation = async (id) => {
     try {
-      await axios.delete(`https://capstonedeploy2.onrender.com/api/history/${id}`, { withCredentials: true });
+      await axios.delete(https://capstonedeploy2.onrender.com/api/history/${id}, { withCredentials: true });
       // Filter out the deleted translation from the local state
       setHistory(history.filter((item) => item.id !== id));
     } catch (error) {
@@ -74,4 +79,3 @@ function TranslationHistory() {
 }
 
 export default TranslationHistory;
-
