@@ -12,6 +12,7 @@ function TranslationHistory() {
     const fetchHistory = async () => {
       try {
         const response = await axios.get("https://capstonedeploy2.onrender.com/api/history", { withCredentials: true });
+        console.log('Fetched history:', response.data);
         setHistory(response.data);
       } catch (error) {
         console.error("Failed to fetch history:", error);
