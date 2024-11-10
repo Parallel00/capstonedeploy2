@@ -32,28 +32,29 @@ function TranslationHistory() {
     }
   };
 
-  return (
-    <div style={{ padding: "20px", textAlign: "center" }} id="container">
-      <Link to="/" style={{ display: "block", marginBottom: "20px", color: "blue", textDecoration: "underline" }}>
-        Back to Homepage
-      </Link>
-      <h2>Translation History</h2>
-      {history.length === 0 ? (
-        <p>No translation history available.</p>
-      ) : (
-        <table style={{ width: "80%", margin: "auto", borderCollapse: "collapse" }}>
-          <thead>
-            <tr>
-              <th>Input Text</th>
-              <th>Output Text</th>
-              <th>Source Language</th>
-              <th>Target Language</th>
-              <th>Timestamp</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {history.map((item) => (
+return (
+  <div style={{ padding: "20px", textAlign: "center" }} id="container">
+    <Link to="/" style={{ display: "block", marginBottom: "20px", color: "blue", textDecoration: "underline" }}>
+      Back to Homepage
+    </Link>
+    <h2>Translation History</h2>
+    {Array.isArray(history) && history.length === 0 ? (
+      <p>No translation history available.</p>
+    ) : (
+      <table style={{ width: "80%", margin: "auto", borderCollapse: "collapse" }}>
+        <thead>
+          <tr>
+            <th>Input Text</th>
+            <th>Output Text</th>
+            <th>Source Language</th>
+            <th>Target Language</th>
+            <th>Timestamp</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {Array.isArray(history) && history.length > 0 ? (
+            history.map((item) => (
               <tr key={item.id}>
                 <td>{item.input_text}</td>
                 <td>{item.output_text}</td>
@@ -64,12 +65,15 @@ function TranslationHistory() {
                   <button onClick={() => deleteTranslation(item.id)}>Delete</button>
                 </td>
               </tr>
-            ))}
-          </tbody>
-        </table>
-      )}
-    </div>
-  );
-}
+            ))
+          ) : (
+            <tr><td colSpan="6">No history found.</td></tr>
+          )}
+        </tbody>
+      </table>
+    )}
+  </div>
+);
+
 
 export default TranslationHistory;
