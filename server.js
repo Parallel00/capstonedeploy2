@@ -165,6 +165,6 @@ app.delete('/api/history/:id', async (req, res) => {
 
 
 // Start the server
-app.listen(port, () => {
+app.listen(5000, () => {
   console.log(`Server is running on port ${port}`);
 });
