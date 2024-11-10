@@ -25,7 +25,7 @@ function TranslationHistory() {
   // Function to delete a translation by ID
   const deleteTranslation = async (id) => {
     try {
-      await axios.delete(https://capstonedeploy2.onrender.com/api/history/${id}, { withCredentials: true });
+      await axios.delete(`https://capstonedeploy2.onrender.com/api/history/${id}`, { withCredentials: true });
       // Filter out the deleted translation from the local state
       setHistory(history.filter((item) => item.id !== id));
     } catch (error) {
