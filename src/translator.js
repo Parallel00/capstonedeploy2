@@ -35,7 +35,7 @@ function Translator() {
 
     try {
       // Send the translation request to the backend API
-      const response = await axios.post('https://your-app-name.onrender.com/api/translate', translationData);
+      const response = await axios.post('https://capstonedeploy2.onrender.com/api/translate', translationData);
       setOutputText(response.data.translation);  // Set the translated text in the output field
     } catch (error) {
       console.error(error);
