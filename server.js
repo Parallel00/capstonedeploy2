@@ -139,10 +139,11 @@ app.get('/api/history', async (req, res) => {
     console.log('Translation history:', result.rows); // Log the results
     res.json(result.rows); // Send the history back as a JSON array
   } catch (error) {
-    console.error(error);
+    console.error('Error in fetching translation history:', error);
     res.status(500).json({ error: 'Failed to fetch translation history' });
   }
 });
+
 
 app.delete('/api/history/:id', async (req, res) => {
   const { id } = req.params;
