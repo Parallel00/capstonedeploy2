@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom"; // Import Link from react-router-dom
 import axios from "axios";
-
+import "./translator.css";
 function TranslationHistory() {
   const [history, setHistory] = useState([]);
 
@@ -8,8 +9,7 @@ function TranslationHistory() {
     // Fetch translation history from the backend
     const fetchHistory = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/history`, { withCredentials: true });
-
+        const response = await axios.get("http://localhost:5000/api/history", { withCredentials: true });
         setHistory(response.data);
       } catch (error) {
         console.error("Failed to fetch history:", error);
@@ -17,11 +17,26 @@ function TranslationHistory() {
       }
     };
 
-    fetchHistory();  // This is the correct call
-  }, []);  // Empty dependency array to run only once on component mount
+    fetchHistory();
+  }, []);
+
+  // Function to delete a translation by ID
+  const deleteTranslation = async (id) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/history/${id}`, { withCredentials: true });
+      // Filter out the deleted translation from the local state
+      setHistory(history.filter((item) => item.id !== id));
+    } catch (error) {
+      console.error("Failed to delete translation:", error);
+      alert("There was an issue deleting the translation. Please try again.");
+    }
+  };
 
   return (
-    <div style={{ padding: "20px", textAlign: "center" }} id="history-container">
+    <div style={{ padding: "20px", textAlign: "center" }} id="container">
+      <Link to="/" style={{ display: "block", marginBottom: "20px", color: "blue", textDecoration: "underline" }}>
+        Back to Homepage
+      </Link>
       <h2>Translation History</h2>
       {history.length === 0 ? (
         <p>No translation history available.</p>
@@ -34,16 +49,20 @@ function TranslationHistory() {
               <th>Source Language</th>
               <th>Target Language</th>
               <th>Timestamp</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            {history.map((item, index) => (
-              <tr key={index}>
+            {history.map((item) => (
+              <tr key={item.id}>
                 <td>{item.input_text}</td>
                 <td>{item.output_text}</td>
                 <td>{item.source_language}</td>
                 <td>{item.target_language}</td>
                 <td>{new Date(item.timestamp).toLocaleString()}</td>
+                <td>
+                  <button onClick={() => deleteTranslation(item.id)}>Delete</button>
+                </td>
               </tr>
             ))}
           </tbody>

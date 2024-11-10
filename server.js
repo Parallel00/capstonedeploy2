@@ -7,17 +7,20 @@ const app = express();
 const connectPgSimple = require('connect-pg-simple')(session);
 const port = process.env.PORT || 5000;
 
-// CORS setup
+// Middleware to allow CORS
 app.use(cors({
-  origin: process.env.FRONTEND_URL,
-  methods: 'GET,POST',
+  origin: 'http://localhost:3000',  // Allow only your frontend
+  methods: 'GET,POST,DELETE',
   credentials: true,
 }));
 
-// PostgreSQL client setup using the DATABASE_URL from the environment
+// PostgreSQL client setup
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
-  ssl: { rejectUnauthorized: false }, // Necessary for Render's SSL certificates
+  user: 'Rival',
+  host: 'localhost',
+  database: 'translatabase',
+  password: '',
+  port: 5432,
 });
 
 // Middleware for handling JSON and URL encoded form data
@@ -26,13 +29,16 @@ app.use(express.urlencoded({ extended: true }));
 
 // Session management setup
 app.use(session({
-  store: new connectPgSimple({ pool: pool, tableName: 'session' }),
-  secret: process.env.SESSION_SECRET,
+  store: new connectPgSimple({
+    pool: pool, // Use the existing PostgreSQL pool
+    tableName: 'session', // Table to store sessions
+  }),
+  secret: 'your_secret_key',
   resave: false,
   saveUninitialized: true,
   cookie: {
-    secure: true,  // Set to true since Render uses HTTPS
-    httpOnly: true,
+    secure: false, // Set to true if using HTTPS
+    httpOnly: true, // Ensures cookies are sent only via HTTP (not accessible by JavaScript)
   },
 }));
 
@@ -80,7 +86,7 @@ app.post('/api/translate', async (req, res) => {
     method: 'POST',
     url: 'https://translate-plus.p.rapidapi.com/translate',
     headers: {
-      'x-rapidapi-key': process.env.RAPIDAPI_KEY, // Replace with your actual API key
+      'x-rapidapi-key': 'e978d93128msh9a0d23411ab8a0fp16dfbcjsn9c3c4d21f62b', // Replace with your actual API key
       'x-rapidapi-host': 'translate-plus.p.rapidapi.com',
       'Content-Type': 'application/json',
     },
@@ -129,7 +135,27 @@ app.get('/api/history', async (req, res) => {
   }
 });
 
+app.delete('/api/history/:id', async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const result = await pool.query('DELETE FROM translations WHERE id = $1', [id]);
+    console.log("Delete result:", result); // Log the result of the delete operation
+    
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'Translation not found' });
+    }
+    
+    res.status(200).json({ message: 'Translation deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting translation:', error);
+    res.status(500).json({ error: 'Failed to delete translation' });
+  }
+});
+
+
+
 // Start the server
-app.listen(port, "0.0.0.0", () => {
+app.listen(port, () => {
   console.log(`Server is running on port ${port}`);
 });

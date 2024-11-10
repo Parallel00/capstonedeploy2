@@ -9,7 +9,6 @@ function App() {
     <div className="App">
       {/* Link to navigate to the history page */}
       <nav style={{ padding: "10px", textAlign: "center" }}>
-        <Link to="/history">View Translation History</Link>
       </nav>
 
       <Routes>

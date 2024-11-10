@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { Route, Routes, Link } from "react-router-dom";
 import axios from "axios";
 import "./translator.css";
 
@@ -34,7 +35,7 @@ function Translator() {
 
     try {
       // Send the translation request to the backend API
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/translate`, translationData);
+      const response = await axios.post('http://localhost:5000/api/translate', translationData);
       setOutputText(response.data.translation);  // Set the translated text in the output field
     } catch (error) {
       console.error(error);
@@ -43,7 +44,9 @@ function Translator() {
   };
 
   return (
+
     <div style={{ padding: "20px", textAlign: "center" }} id="container">
+	<h1>Translator</h1>
       {/* Language selection dropdowns */}
       <div>
         <select value={sourceLanguage} onChange={handleSourceLanguageChange}>
@@ -64,6 +67,7 @@ function Translator() {
           <option value="hi">Hindi</option>
           <option value="iw">Hebrew</option>
         </select>
+		<span> to </span>
         <select value={targetLanguage} onChange={handleTargetLanguageChange}>
           <option value="en">English</option>
           <option value="es">Spanish</option>
@@ -105,6 +109,7 @@ function Translator() {
           readOnly
         />
       </div>
+	  	        <Link to="/history">View Translation History</Link>
     </div>
   );
 };
