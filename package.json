@@ -20,7 +20,7 @@
     "concurrently": "^8.0.0"
   },
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run frontend\"",
+    "start": "npm run server",
     "server": "node server.js",
     "frontend": "react-scripts start",
     "build": "react-scripts build",
