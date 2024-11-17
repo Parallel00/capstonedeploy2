@@ -15,7 +15,7 @@ function Login() {
 
   const handleLogin = async () => {
     try {
-      const response = await axios.post("http://localhost:5000/api/login", { username, password }, { withCredentials: true });
+      const response = await axios.post("${process.env.FRONTEND_URL}/api/login", { username, password }, { withCredentials: true });
 
       if (response.data.success) {
         updateUser(response.data.user);  // Update the user context
