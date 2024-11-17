@@ -64,6 +64,9 @@ function Registration() {
         />
       </div>
       <button onClick={handleRegister}>Register</button>
+            <br />
+            <br />
+            <p>Passwords must be at least 6 characters long.</p>
     </div>
   );
 }
