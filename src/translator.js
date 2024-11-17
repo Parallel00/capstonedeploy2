@@ -1,14 +1,15 @@
 import React, { useState } from "react";
-import { Route, Routes, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import "./translator.css";
 
 function Translator() {
-  // State variables for text input and translation result
+  // State variables for text input, translation result, and loading state
   const [inputText, setInputText] = useState("");
   const [outputText, setOutputText] = useState("");
   const [sourceLanguage, setSourceLanguage] = useState("en");
   const [targetLanguage, setTargetLanguage] = useState("es");
+  const [loading, setLoading] = useState(false); // New state to track loading
 
   // Handle changes in the input text
   const handleInputChange = (e) => {
@@ -26,27 +27,33 @@ function Translator() {
   };
 
   // Handle translation request
-  const handleTranslate = async () => {
-    const translationData = {
-      inputText: inputText,  // Updated to match the backend expected keys
-      sourceLanguage: sourceLanguage,
-      targetLanguage: targetLanguage,
-    };
-
-    try {
-      // Send the translation request to the backend API
-      const response = await axios.post('https://capstonedeploy2.onrender.com/api/translate', translationData);
-      setOutputText(response.data.translation);  // Set the translated text in the output field
-    } catch (error) {
-      console.error(error);
-      setOutputText("Translation failed. Please try again.");
-    }
+const handleTranslate = async () => {
+  const translationData = {
+    inputText: inputText,
+    sourceLanguage: sourceLanguage,
+    targetLanguage: targetLanguage,
   };
 
-  return (
+  try {
+    setLoading(true); // Set loading to true when translation starts
+    
+    // Send the translation request to the backend API with 'withCredentials'
+    const response = await axios.post('http://localhost:5000/api/translate', translationData, {
+      withCredentials: true,  // This allows sending cookies or credentials with the request
+    });
 
+    setOutputText(response.data.translation);  // Set the translated text in the output field
+  } catch (error) {
+    console.error(error);
+    setOutputText("Translation failed. Please try again.");
+  } finally {
+    setLoading(false); // Set loading to false after translation is complete
+  }
+};
+
+  return (
     <div style={{ padding: "20px", textAlign: "center" }} id="container">
-	<h1>Translator</h1>
+      <h1>Translator</h1>
       {/* Language selection dropdowns */}
       <div>
         <select value={sourceLanguage} onChange={handleSourceLanguageChange}>
@@ -67,7 +74,7 @@ function Translator() {
           <option value="hi">Hindi</option>
           <option value="iw">Hebrew</option>
         </select>
-		<span> to </span>
+        <span> to </span>
         <select value={targetLanguage} onChange={handleTargetLanguageChange}>
           <option value="en">English</option>
           <option value="es">Spanish</option>
@@ -100,18 +107,19 @@ function Translator() {
       {/* Button to trigger translation */}
       <button onClick={handleTranslate}>Translate</button>
 
-      {/* Textarea to display the translated text */}
+      {/* Textarea to display the translation or loading message */}
       <div style={{ margin: "20px 0" }}>
         <textarea
           style={{ width: "400px", height: "150px" }}
           placeholder="Translation output..."
-          value={outputText}
+          value={loading ? "Please wait..." : outputText} // Show loading message when loading
           readOnly
         />
       </div>
-	  	        <Link to="/history">View Translation History</Link>
+
+      <Link to="/history">View Translation History</Link>
     </div>
   );
-};
+}
 
 export default Translator;
