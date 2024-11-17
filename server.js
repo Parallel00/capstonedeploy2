@@ -11,24 +11,13 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // Middleware to allow CORS
-app.use(cors({
-  origin: 'http://localhost:3000',  // Allow only your frontend
-  methods: 'GET,POST,DELETE',
-  credentials: true,
-}));
+const databaseUrl = process.env.DATABASE_URL;
 
-app.use((req, res, next) => {
-  console.log("Session ID:", req.session); // Logs the session
-  next();
-});
-
-// PostgreSQL client setup
 const pool = new Pool({
-  user: 'Rival',
-  host: 'localhost',
-  database: 'translatabase',
-  password: '',
-  port: 5432,
+  connectionString: databaseUrl,
+  ssl: {
+    rejectUnauthorized: false, // Render requires SSL connections
+  },
 });
 
 // Middleware for handling JSON and URL encoded form data
@@ -41,7 +30,7 @@ app.use(session({
     pool: pool, 
     tableName: 'session',
   }),
-  secret: 'your_secret_key',
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: {
@@ -108,7 +97,7 @@ app.post('/api/translate', async (req, res) => {
     method: 'POST',
     url: 'https://translate-plus.p.rapidapi.com/translate',
     headers: {
-      'x-rapidapi-key': 'e978d93128msh9a0d23411ab8a0fp16dfbcjsn9c3c4d21f62b',
+      'x-rapidapi-key': process.env.RAPIDAPI_KEY,
       'x-rapidapi-host': 'translate-plus.p.rapidapi.com',
       'Content-Type': 'application/json',
     },
