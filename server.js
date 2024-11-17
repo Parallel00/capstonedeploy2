@@ -6,6 +6,7 @@ const cors = require('cors');
 const { body, validationResult } = require('express-validator'); // Import validation functions
 const bcrypt = require('bcrypt'); // Import bcrypt for password hashing
 const connectPgSimple = require('connect-pg-simple')(session);
+const path = require('path');
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -45,6 +46,15 @@ app.use(session({
     maxAge: 24 * 60 * 60 * 1000,  // 1 day expiration
   },
 }));
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'build')));
+
+  // Handle any other routes that should serve the React app
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+  });
+}
 
 // Function to create both tables if they do not exist
 const createTables = async () => {
