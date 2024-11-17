@@ -33,7 +33,7 @@ function TranslationHistory() {
 
   const deleteTranslation = async (id) => {
     try {
-      await axios.delete(`${process.env.FRONTEND_URL}/api/history/${id}`, { withCredentials: true });
+      await axios.delete(`https://capstonedeploy2.onrender.com/api/history/${id}`, { withCredentials: true });
       setHistory(history.filter((item) => item.id !== id));
     } catch (error) {
       console.error("Failed to delete translation:", error);
