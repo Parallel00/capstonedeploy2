@@ -47,15 +47,6 @@ app.use(session({
   },
 }));
 
-if (process.env.NODE_ENV === 'production') {
-  app.use(express.static(path.join(__dirname, 'build')));
-
-  // Handle any other routes that should serve the React app
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
-  });
-}
-
 // Function to create both tables if they do not exist
 const createTables = async () => {
   const createUsersTableQuery = `
@@ -243,6 +234,17 @@ app.post('/api/login', async (req, res) => {
 });
 
 //Logouts are handled by the userContext.js file.
+
+
+if (process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'build')));
+
+  // Handle any other routes that should serve the React app
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve(__dirname, 'build', 'index.html'));
+  });
+}
+
 
 // Start the server
 app.listen(port, () => {
