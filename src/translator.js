@@ -38,7 +38,7 @@ const handleTranslate = async () => {
     setLoading(true); // Set loading to true when translation starts
     
     // Send the translation request to the backend API with 'withCredentials'
-    const response = await axios.post('${process.env.FRONTEND_URL}/api/translate', translationData, {
+    const response = await axios.post('https://capstonedeploy2.onrender.com/api/translate', translationData, {
       withCredentials: true,  // This allows sending cookies or credentials with the request
     });
 
