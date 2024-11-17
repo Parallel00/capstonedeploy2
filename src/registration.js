@@ -18,7 +18,7 @@ function Registration() {
     }
 
     try {
-      const response = await axios.post("${process.env.FRONTEND_URL}/api/register", {
+      const response = await axios.post("https://capstonedeploy2.onrender.com/api/register", {
         username,
         password,
       });
