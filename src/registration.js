@@ -18,7 +18,7 @@ function Registration() {
     }
 
     try {
-      const response = await axios.post("http://localhost:5000/api/register", {
+      const response = await axios.post("${process.env.FRONTEND_URL}/api/register", {
         username,
         password,
       });
