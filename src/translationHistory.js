@@ -18,7 +18,7 @@ function TranslationHistory() {
 
     const fetchHistory = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/history", { withCredentials: true });
+        const response = await axios.get("${process.env.FRONTEND_URL}/api/history", { withCredentials: true });
         setHistory(response.data);
       } catch (error) {
         console.error("Failed to fetch history:", error);
@@ -33,7 +33,7 @@ function TranslationHistory() {
 
   const deleteTranslation = async (id) => {
     try {
-      await axios.delete(`http://localhost:5000/api/history/${id}`, { withCredentials: true });
+      await axios.delete(`${process.env.FRONTEND_URL}/api/history/${id}`, { withCredentials: true });
       setHistory(history.filter((item) => item.id !== id));
     } catch (error) {
       console.error("Failed to delete translation:", error);
